@@ -1,20 +1,19 @@
 port: 7880
 
 redis:
-  address: redis:6379
+  address: localhost:6379
 
 rtc:
   port_range_start: 50000
   port_range_end: 60000
   tcp_port: 7881
-  use_external_ip: false
-  node_ip: 127.0.0.1
+  use_external_ip: true
 
 keys:
-  27c78e40-c4ff-473b-a0ad-48cd972274c4: 5e7f952f-db1f-47fe-ad63-c808fe12a8fd
+  key: "your-api-secret"
 
 webhook:
-  api_key: 27c78e40-c4ff-473b-a0ad-48cd972274c4
+  api_key: "your-api-key"
   urls:
     - http://localhost:4000/webhook
 

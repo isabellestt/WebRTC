@@ -1,16 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ConnectionDetails } from '@/app/api/connection-details/route';
+import { ConnectionDetails } from '../api/connection-details/route';
 
 export default function useConnectionDetails() {
-  // Generate room connection details, including:
-  //   - A random Room name
-  //   - A random Participant name
-  //   - An Access Token to permit the participant to join the room
-  //   - The URL of the LiveKit server to connect to
-  //
-  // In real-world application, you would likely allow the user to specify their
-  // own participant name, and possibly to choose from existing rooms to join.
-
     const [connectionDetails, setConnectionDetails] = useState<ConnectionDetails | null>(null);
 
     const fetchConnectionDetails = useCallback(() => {

@@ -8,7 +8,7 @@ const LIVEKIT_API_KEY = process.env.LIVEKIT_API_KEY;
 const LIVEKIT_API_SECRET = process.env.LIVEKIT_API_SECRET;
 
 if (!LIVEKIT_API_KEY || !LIVEKIT_API_SECRET) {
-    throw Error("Must have livekit api key and livekit secret")
+    throw Error(`Must have livekit api key ${LIVEKIT_API_KEY} and livekit secret`)
 }
 
 const webhookReceiver = new WebhookReceiver(LIVEKIT_API_KEY, LIVEKIT_API_SECRET);

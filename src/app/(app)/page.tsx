@@ -1,24 +1,26 @@
-import React, { useState, useEffect, useCallback } from 'react';
+"use client";
+
+import React, { useState, useCallback } from 'react';
 import { 
   LiveKitRoom, 
-  VideoConference, 
-  RoomAudioRenderer, 
-  ControlBar,
-  useTracks,
-  useParticipants,
-  useLocalParticipant,
-  useRoomContext,
-  Chat,
-  ChatEntry
+  // VideoConference, 
+  // RoomAudioRenderer, 
+  // ControlBar,
+  // useTracks,
+  // useParticipants,
+  // useLocalParticipant,
+  // useRoomContext,
+  // Chat,
+  // ChatEntry
 } from '@livekit/components-react';
-import { 
-  Room, 
-  Track, 
-  RoomEvent, 
-  RemoteTrack, 
-  RemoteTrackPublication 
-} from 'livekit-client';
-import useConnectionDetails from '@/app/hooks/useConnectionDetails';
+// import { 
+//   Room, 
+//   Track, 
+//   RoomEvent, 
+//   RemoteTrack, 
+//   RemoteTrackPublication 
+// } from 'livekit-client';
+import useConnectionDetails from '../hooks/useConnectionDetails';
 
 const LiveKitTestApp = () => {
   const [isConnected, setIsConnected] = useState(false);
