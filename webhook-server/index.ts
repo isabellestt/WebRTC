@@ -1,8 +1,18 @@
 import express, {Request, Response} from "express"
 import { WebhookReceiver, WebhookEvent, TrackSource } from "livekit-server-sdk";
 import type { ParticipantState, Session, ConversationMessage } from "./types"
+import http from "http";
+import { Server } from "socket.io"
 
 const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:3000", // Your frontend URL
+        methods: ["GET", "POST"]
+    }
+});
 
 const LIVEKIT_API_KEY = process.env.LIVEKIT_API_KEY;
 const LIVEKIT_API_SECRET = process.env.LIVEKIT_API_SECRET;
@@ -15,6 +25,31 @@ const webhookReceiver = new WebhookReceiver(LIVEKIT_API_KEY, LIVEKIT_API_SECRET)
 
 // Store active sessions
 const sessions = new Map<string, Session>();
+
+io.on("connection", (socket) => {
+    console.log("Client connected:", socket.id);
+    
+    // Client can join a specific room to receive updates
+    socket.on("join-room", (roomName: string) => {
+        socket.join(roomName);
+        console.log(`Socket ${socket.id} joined room ${roomName}`);
+        
+        // Send current session state if it exists
+        const session = sessions.get(roomName);
+        if (session) {
+            socket.emit("session-update", {
+                roomName,
+                participants: Array.from(session.participants.entries()),
+                conversationHistory: session.conversationHistory,
+                aiAgentActive: session.aiAgentActive
+            });
+        }
+    });
+    
+    socket.on("disconnect", () => {
+        console.log("Client disconnected:", socket.id);
+    });
+});
 
 app.use('/webhook', express.raw({ type: 'application/webhook+json' }));
 
