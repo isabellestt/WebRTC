@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  livekit:
+    image: livekit/livekit-server:latest
+    network_mode: host
+    volumes:
+      - ./livekit-server/livekit.yaml:/livekit.yaml
+    command: --config /livekit.yaml
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - webhook-server
+    environment:
+      - LIVEKIT_API_KEY=${LIVEKIT_API_SECRET}
+      - LIVEKIT_WEBHOOK_API_KEY=${LIVEKIT_API_KEY}
+
+  redis:
+    image: redis:7-alpine
+    network_mode: host
+    volumes:
+      - redis_data:/data
+    command: redis-server --save 60 1 --loglevel warning
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./app
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_LIVEKIT_URL=${NEXT_PUBLIC_LIVEKIT_URL}
+    depends_on:
+      - livekit
+
+  webhook-server:
+    build:
+      context: ./webhook-server
+    ports:
+      - "4000:4000"
+    environment:
+      - WEBHOOK_API_KEY=${LIVEKIT_API_KEY}
+    restart: unless-stopped
+
+volumes:
+  redis_data:

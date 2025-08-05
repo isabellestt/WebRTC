@@ -1,0 +1,29 @@
+port: 7880
+
+redis:
+  address: localhost:6379
+
+rtc:
+  port_range_start: 50000
+  port_range_end: 60000
+  tcp_port: 7881
+  use_external_ip: true
+
+keys:
+  your-api-key: 
+
+webhook:
+  api_key: 
+  urls:
+  - http://localhost:4000/webhook
+
+# 
+recording:
+  enabled: true
+
+# customize audio level sensitivity
+audio:
+  active_level: 20      # 0-127 where 0 is the loudest, default is 30
+  min_percentile: 30    # a participant is considered active if active > percentile
+  update_interval: 200 # frequency in ms to notify change to clients, defaults to 500
+  smooth_intervals: 4 # smooth out values over N samples
